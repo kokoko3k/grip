@@ -12,6 +12,7 @@ Gambas3 runtimes:
 	gb.desktop
 	gb.form
 	gb.qt4
+	gb.image
 
 An Infinality patched freetype running.
 

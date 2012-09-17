@@ -23,9 +23,9 @@ Geometry=[1684,298,301,527]
 Geometry=[51,0,210,210]
 
 [OpenFile]
-Active=1
 File[1]=".src/FMain.form"
-File[2]=".src/FMain.class:33.2"
+Active=2
+File[2]=".src/FMain.class:85.25"
 File[3]="preview.gbs:2.0"
 Count=3
 

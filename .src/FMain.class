@@ -82,10 +82,8 @@ Public Sub previewprocess_read()
   Dim timeout As Integer = 5
   Read #Last, sLine, -256
   sline = (CInt(Trim(sLine)))
-  Debug sline
   Repeat
    Embedder1.embed(sline)
-   Debug Embedder1.client
    Wait 0.5
    timeout -= 1
   Until (embedder1.client <> 0) Or timeout = 0

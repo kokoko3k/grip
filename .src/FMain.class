@@ -1,0 +1,142 @@
+' Gambas class file
+
+Public ObjectKey As Label
+Public ObjectValue As TextBox
+Public textarea1 As Textarea
+Public newenvironment As New String[]
+Public previewprocess As Process
+
+Public Sub Form_Open()
+  Dim key As String
+  Dim s As String
+  Try Kill "/tmp/font.txt"
+  For Each s In Fonts
+    ComboBox1.add(s)
+  Next
+  
+  ColorButton2.color = color.Foreground
+  ColorButton2.color = color.TextBackground
+  ComboBox1.text = panelfont.Font.name
+  SpinBox1.Value = panelfont.Font.Size
+  
+  Me.MAXIMIZED = True
+  vbox1.w = optionsbox.Font.TextWidth("INFINALITY_FT_AUTOHINT_HORIZONTAL_STEM_DARKEN_STRENGTH") * 1.1
+  For Each key In Application.Env
+    If key Like "INFINALITY*" Then
+      ObjectKey = New Label(optionsbox)
+      ObjectKey.AutoResize = True
+      ObjectKey.text = key
+      ObjectValue = New Textbox(optionsbox) As "ObjectValue"
+      ObjectValue.h = ObjectValue.Font.TextHeight("|") * 1.5
+      Object.Lock(Objectvalue)
+      ObjectValue.text = Application.Env[key]
+      Object.unLock(Objectvalue)
+      ObjectValue.tag = key
+    Endif
+  Next
+  GetPreview()
+End
+
+Public Sub ObjectValue_Change()
+  object.Lock(Last)
+  Wait 1
+  Object.Unlock(Last)
+  ApplyEnvironment()
+  GetPreview()
+End
+
+
+Public Sub ApplyEnvironment()
+  Dim mykey As Object
+  newenvironment.clear
+  For Each mykey In optionsbox.Children
+    If mykey Is Textbox Then
+      newenvironment.add(mykey.tag & "=" & mykey.text)
+    Endif
+  Next
+End
+
+
+Public Sub Button1_Click()
+  ApplyEnvironment()
+  Try Shell "konsole" With newenvironment
+  If Error Then Try Shell "lxterminal" With newenvironment 
+  If Error Then Try Shell "gnome-terminal" With newenvironment 
+  If Error Then Try Shell "xterm" With newenvironment 
+  If Error Then Message.Error("no supported terminal found", "ok")
+End
+
+Public Sub GetPreview()
+  Try Kill "/tmp/ftpreviewtext.txt"
+  Try Kill "/tmp/preview.gbs"
+  File.Save("/tmp/ftpreviewtext.txt", TextArea2.text)
+  Try Copy "preview.gbs" To "/tmp/preview.gbs"
+  Try previewprocess.Kill
+  previewprocess = Shell "gbs3 /tmp/preview.gbs " & ColorButton1.color & " " & ColorButton2.color & " 2>/dev/null " With newenvironment For Input As "previewprocess"
+End
+
+
+Public Sub previewprocess_read()
+  Dim sLine As String
+  Dim win As DesktopWindow
+  Dim timeout As Integer = 5
+  Read #Last, sLine, -256
+  sline = (CInt(Trim(sLine)))
+  Debug sline
+  Repeat
+   Embedder1.embed(sline)
+   Debug Embedder1.client
+   Wait 0.5
+   timeout -= 1
+  Until (embedder1.client <> 0) Or timeout = 0
+ End
+
+Public Sub Form_Close()
+  Try previewprocess.Kill
+End
+
+Public Sub fontchange_Change()
+  If Not FMain.visible Then Return
+  object.Lock(Last)
+  Wait 1
+  object.Unlock(Last)
+  UpdateFont()
+End
+
+Public Sub fontchange_Click() 
+  If Not FMain.visible Then Return
+  UpdateFont()
+End
+
+Public Sub UpdateFont()
+    Try Kill "/tmp/font.txt"
+    TextArea2.Foreground = ColorButton1.color
+    TextArea2.background = ColorButton2.color
+    panelfont.Font.name = ComboBox1.text
+    panelfont.Font.bold = btnBold.Value
+    panelfont.Font.Italic = btnItalic.value
+    panelfont.Font.Underline bold = btnUnderline.value
+    panelfont.Font.size = SpinBox1.value
+    panelfont.Font.Strikeout = btnStrikeOut.value
+    TextArea2.font = Font[panelfont.Font.ToString()]
+    File.save("/tmp/font.txt", panelfont.Font.ToString())
+    GetPreview()
+End
+
+Public Sub Button2_Click()
+  Dim item As String
+  Dim env As String
+  ApplyEnvironment()
+  For Each item In newenvironment
+    item = Replace(item, "=", "=\"") & "\""
+    env &= item & "\n"
+  Next 'item
+  Clipboard.Copy(env, "text/plain")
+End
+
+Public Sub TextArea2_Change()
+  object.Lock(Last)
+  Wait 5
+  object.Unlock(Last)
+  GetPreview()
+End

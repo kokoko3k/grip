@@ -1,0 +1,13 @@
+# Gambas Project File 3.0
+# Compiled with Gambas 3.2.1
+Title=Grip
+Startup=FMain
+Version=0.0.1
+Component=gb.image
+Component=gb.qt4
+Component=gb.form
+Component=gb.desktop
+Description="Gambas realtime infinality previewer"
+Authors="Antonio Orefice;\nkokoko3k < at > gmail < dot< com"
+TabSize=2
+Packager=1

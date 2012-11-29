@@ -138,7 +138,14 @@
           Text = ("Changed")
         }
         { Embedder1 Embedder
-          MoveScaled(1,7,54,32)
+          MoveScaled(1,2,24,17)
+          Visible = False
+          Background = Color.SelectedForeground
+          Expand = True
+        }
+        { Embedder2 Embedder
+          MoveScaled(27,2,24,17)
+          Visible = False
           Background = Color.SelectedForeground
           Expand = True
         }

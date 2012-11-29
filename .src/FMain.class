@@ -40,7 +40,7 @@ End
 
 Public Sub ObjectValue_Change()
   object.Lock(Last)
-  Wait 1
+  Wait 0.5
   Object.Unlock(Last)
   ApplyEnvironment()
   GetPreview()
@@ -67,8 +67,11 @@ Public Sub Button1_Click()
   If Error Then Message.Error("no supported terminal found", "ok")
 End
 
+Private previewing As Boolean = False
 Private CurrentP As Integer = 0
 Public Sub GetPreview()
+  If previewing Then Return
+  previewing = True
   Try Kill "/tmp/ftpreviewtext.txt"
   Try Kill "/tmp/preview.gbs"
   File.Save("/tmp/ftpreviewtext.txt", TextArea2.text)
@@ -85,31 +88,39 @@ End
 Public Sub previewprocess1_read()
   Dim sLine As String
   Dim win As DesktopWindow
-  Dim timeout As Integer = 5
+  Dim timeout As Integer = 25
   Read #Last, sLine, -256
   sline = (CInt(Trim(sLine)))
-  Try previewprocess2.Kill
+  embedder1.Discard()
   Repeat
    Embedder1.embed(sline)
-   Wait 0.5
+   Wait 0.1
    timeout -= 1
   Until (embedder1.client <> 0) Or timeout = 0
+  Embedder2.hide
+  Try previewprocess2.Kill
+  Embedder1.show
   CurrentP = 1
+  previewing = False
  End
 
 Public Sub previewprocess2_read()
   Dim sLine As String
   Dim win As DesktopWindow
-  Dim timeout As Integer = 5
+  Dim timeout As Integer = 25
   Read #Last, sLine, -256
   sline = (CInt(Trim(sLine)))
-  Try previewprocess1.Kill
+  embedder2.Discard()
   Repeat
-   Embedder1.embed(sline)
-   Wait 0.5
+   Embedder2.embed(sline)
+   Wait 0.1
    timeout -= 1
-  Until (embedder1.client <> 0) Or timeout = 0
+  Until (embedder2.client <> 0) Or timeout = 0
+  Embedder1.hide
+  Try previewprocess1.Kill
+  Embedder2.Show
   CurrentP = 2
+  previewing = False
  End
 
 Public Sub Form_Close()
@@ -120,7 +131,7 @@ End
 Public Sub fontchange_Change()
   If Not FMain.visible Then Return
   object.Lock(Last)
-  Wait 1
+  Wait 0.5
   object.Unlock(Last)
   UpdateFont()
 End
@@ -158,7 +169,7 @@ End
 
 Public Sub TextArea2_Change()
   object.Lock(Last)
-  Wait 2
+  Wait 0.5
   object.Unlock(Last)
   GetPreview()
 End

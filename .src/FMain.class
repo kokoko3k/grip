@@ -4,7 +4,8 @@ Public ObjectKey As Label
 Public ObjectValue As TextBox
 Public textarea1 As Textarea
 Public newenvironment As New String[]
-Public previewprocess As Process
+Public previewprocess1 As Process
+Public previewprocess2 As Process
 
 Public Sub Form_Open()
   Dim key As String
@@ -66,31 +67,54 @@ Public Sub Button1_Click()
   If Error Then Message.Error("no supported terminal found", "ok")
 End
 
+Private CurrentP As Integer = 0
 Public Sub GetPreview()
   Try Kill "/tmp/ftpreviewtext.txt"
   Try Kill "/tmp/preview.gbs"
   File.Save("/tmp/ftpreviewtext.txt", TextArea2.text)
   Try Copy "preview.gbs" To "/tmp/preview.gbs"
-  Try previewprocess.Kill
-  previewprocess = Shell "gbs3 /tmp/preview.gbs " & ColorButton1.color & " " & ColorButton2.color & " 2>/dev/null " With newenvironment For Input As "previewprocess"
+
+  If CurrentP = 1 Then
+    previewprocess2 = Shell "gbs3 /tmp/preview.gbs " & ColorButton1.color & " " & ColorButton2.color & " 2>/dev/null " With newenvironment For Input As "previewprocess2"
+      Else
+    previewprocess1 = Shell "gbs3 /tmp/preview.gbs " & ColorButton1.color & " " & ColorButton2.color & " 2>/dev/null " With newenvironment For Input As "previewprocess1"  
+  Endif
 End
 
 
-Public Sub previewprocess_read()
+Public Sub previewprocess1_read()
   Dim sLine As String
   Dim win As DesktopWindow
   Dim timeout As Integer = 5
   Read #Last, sLine, -256
   sline = (CInt(Trim(sLine)))
+  Try previewprocess2.Kill
   Repeat
    Embedder1.embed(sline)
    Wait 0.5
    timeout -= 1
   Until (embedder1.client <> 0) Or timeout = 0
+  CurrentP = 1
+ End
+
+Public Sub previewprocess2_read()
+  Dim sLine As String
+  Dim win As DesktopWindow
+  Dim timeout As Integer = 5
+  Read #Last, sLine, -256
+  sline = (CInt(Trim(sLine)))
+  Try previewprocess1.Kill
+  Repeat
+   Embedder1.embed(sline)
+   Wait 0.5
+   timeout -= 1
+  Until (embedder1.client <> 0) Or timeout = 0
+  CurrentP = 2
  End
 
 Public Sub Form_Close()
-  Try previewprocess.Kill
+  Try previewprocess1.Kill
+  Try previewprocess2.Kill
 End
 
 Public Sub fontchange_Change()
@@ -134,7 +158,13 @@ End
 
 Public Sub TextArea2_Change()
   object.Lock(Last)
-  Wait 5
+  Wait 2
   object.Unlock(Last)
   GetPreview()
+End
+
+Private PreviousLayout As Integer[]
+Public Sub ToggleButton1_Click()
+Panel2.visible = Not (ToggleButton1.value)
+
 End

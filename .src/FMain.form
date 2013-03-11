@@ -7,7 +7,7 @@
   Spacing = True
   Margin = True
   { VBox1 VBox
-    MoveScaled(1,1,23,86)
+    MoveScaled(0,0,23,86)
     { Label1 Label
       MoveScaled(1,2,33,3)
       Visible = False
@@ -15,17 +15,35 @@
       Text = ("Infinality Options:")
     }
     { OptionsBox ScrollView
-      MoveScaled(0,6,20,66)
+      MoveScaled(2,5,20,53)
       Expand = True
       Arrangement = Arrange.Vertical
     }
     { Button2 Button
-      MoveScaled(1,72,21,4)
+      MoveScaled(2,59,21,4)
       Text = ("Copy settings to clipboard")
     }
+    { Label4 Label
+      MoveScaled(1,67,19,4)
+      Font = Font["Bold,Italic"]
+      Text = ("Start this program with new settings:")
+    }
+    { Panel4 Panel
+      MoveScaled(1,72,21,4)
+      Arrangement = Arrange.Horizontal
+      { TextBox1 TextBox
+        MoveScaled(0,0,11,4)
+        Expand = True
+        Text = ("soffice")
+      }
+      { Button3 Button
+        MoveScaled(14,0,4,4)
+        Picture = Picture["icon:/small/apply"]
+      }
+    }
     { Button1 Button
-      MoveScaled(1,81,21,4)
-      Text = ("start a terminal with new settings")
+      MoveScaled(3,78,21,4)
+      Text = ("Or start a terminal with new settings")
     }
   }
   { Panel3 Panel

@@ -16,6 +16,15 @@ Geometry=[217,135,210,210]
 [DebugWindow/Desktop.FindWindow("kwrite")]
 Geometry=[217,135,210,210]
 
+[DebugWindow/VSplit1]
+Geometry=[47,0,1039,822]
+
+[DebugWindow/VSplit1.Layout]
+Geometry=[47,0,210,210]
+
+[DebugWindow/VSplit1.Settings]
+Geometry=[222,168,878,668]
+
 [DebugWindow/mywin]
 Geometry=[1684,298,301,527]
 
@@ -25,7 +34,7 @@ Geometry=[51,0,210,210]
 [OpenFile]
 File[1]=".src/FMain.form"
 Active=2
-File[2]=".src/FMain.class:85.25"
+File[2]=".src/FMain.class:89.24"
 File[3]="preview.gbs:2.0"
 Count=3
 

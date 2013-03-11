@@ -60,12 +60,16 @@ End
 
 Public Sub Button1_Click()
   ApplyEnvironment()
-  Try Shell "konsole" With newenvironment
-  If Error Then Try Shell "lxterminal" With newenvironment 
-  If Error Then Try Shell "gnome-terminal" With newenvironment 
-  If Error Then Try Shell "xterm" With newenvironment 
-  If Error Then Message.Error("no supported terminal found", "ok")
+  Try Shell "konsole || lxterminal || gnome-terminal || xterm" With newenvironment
 End
+
+
+Public Sub TextBox1_Activate()
+  ApplyEnvironment()
+  Try Shell TextBox1.text With newenvironment
+  
+End
+
 
 Private previewing As Boolean = False
 Private CurrentP As Integer = 0
@@ -177,5 +181,11 @@ End
 Private PreviousLayout As Integer[]
 Public Sub ToggleButton1_Click()
 Panel2.visible = Not (ToggleButton1.value)
+
+End
+
+Public Sub Button3_Click()
+
+  TextBox1_Activate()
 
 End

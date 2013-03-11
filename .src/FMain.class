@@ -60,7 +60,7 @@ End
 
 Public Sub Button1_Click()
   ApplyEnvironment()
-  Try Shell "konsole || lxterminal || gnome-terminal || xterm" With newenvironment
+  Try Shell "konsole || lxterminal || gnome-terminal || xfce4-terminal || xterm" With newenvironment
 End
 
 

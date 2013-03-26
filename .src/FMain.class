@@ -38,7 +38,7 @@ Public Sub Form_Open()
   GetPreview()
 End
 
-Public Sub ObjectValue_Change()
+Public Sub OLD_ObjectValue_Change()
   object.Lock(Last)
   Wait 0.5
   Object.Unlock(Last)
@@ -46,6 +46,17 @@ Public Sub ObjectValue_Change()
   GetPreview()
 End
 
+Public Sub ObjectValue_Change()
+  Dim previousvalue As String
+  Try previousvalue = ObjectValue.text 
+  Wait 0.5
+  If previousvalue = ObjectValue.text Then
+    ApplyEnvironment()
+    GetPreview()
+      Else
+    Return
+  Endif
+End
 
 Public Sub ApplyEnvironment()
   Dim mykey As Object
@@ -70,7 +81,7 @@ Public Sub TextBox1_Activate()
   
 End
 
-
+Private MainFormActiveWindowID As Integer = 0
 Private previewing As Boolean = False
 Private CurrentP As Integer = 0
 Public Sub GetPreview()
@@ -185,7 +196,15 @@ Panel2.visible = Not (ToggleButton1.value)
 End
 
 Public Sub Button3_Click()
-
   TextBox1_Activate()
-
 End
+
+
+
+Public Sub embedders_Embed()
+  If Not FMain.visible Then Return
+  While Desktop.ActiveWindow <> FMain.Handle
+    Desktop.ActiveWindow = FMain.Handle
+  Wend
+End
+

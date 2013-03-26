@@ -132,7 +132,7 @@
       MoveScaled(0,8,58,75)
       Expand = True
       { Panel2 Panel
-        MoveScaled(0,2,56,44)
+        MoveScaled(1,2,56,44)
         Expand = True
         Arrangement = Arrange.Vertical
         { Label3 Label
@@ -155,13 +155,15 @@
           Font = Font["Bold,Italic"]
           Text = ("Changed")
         }
-        { Embedder1 Embedder
+        { Embedder1 Embedder embedders
+          Name = "Embedder1"
           MoveScaled(1,2,24,17)
           Visible = False
           Background = Color.SelectedForeground
           Expand = True
         }
-        { Embedder2 Embedder
+        { Embedder2 Embedder embedders
+          Name = "Embedder2"
           MoveScaled(27,2,24,17)
           Visible = False
           Background = Color.SelectedForeground

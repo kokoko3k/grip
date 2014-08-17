@@ -163,7 +163,7 @@ Public Sub UpdateFont()
     panelfont.Font.name = ComboBox1.text
     panelfont.Font.bold = btnBold.Value
     panelfont.Font.Italic = btnItalic.value
-    panelfont.Font.Underline bold = btnUnderline.value
+    panelfont.Font.Underline = btnUnderline.value
     panelfont.Font.size = SpinBox1.value
     panelfont.Font.Strikeout = btnStrikeOut.value
     TextArea2.font = Font[panelfont.Font.ToString()]
